@@ -15,7 +15,7 @@ public class ReceiptTest {
 	
     @Test
     public void testReceipt() throws InvalidReceiptException {
-        Medication medication = new Medication("Advil", Medication.PAINKILLER);
+        Medication medication = new Medication("Advil", Medication.GetTypeByName("PAINKILLER"));
         Prescription prescription = new Prescription(medication, 150);
         Customer customer = new Customer("John Smith");
 
@@ -32,7 +32,7 @@ public class ReceiptTest {
 
     @Test
     public void testHtmlReceipt() throws InvalidReceiptException {
-        Medication medication = new Medication("Advil", Medication.PAINKILLER);
+        Medication medication = new Medication("Advil", Medication.GetTypeByName("PAINKILLER"));
         Prescription prescription = new Prescription(medication, 150);
         Customer customer = new Customer("John Smith");
 

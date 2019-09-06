@@ -97,13 +97,6 @@ public class Receipt {
 	 */
 
 	/**
-	 * a Receipt needs a customer and their prescriptions to calculate
-	 * the total cost and total optimal points. It will then genrate both 
-	 * the text and html output for this receipt
-	 */
-	Receipt() {/* Empty Constructor */}
-
-	/**
 	 * a Receipt takes a customer and their prescriptions, sets up some accumulators
 	 * for the total cost and total optimal points and genrates both 
 	 * the text and html output for a receipt
@@ -132,36 +125,33 @@ public class Receipt {
      */
 	public static double CalculatePrescriptionCost(Prescription prescription) {
     	double thisCost = 0.0;
-    	
+    	int type = prescription.getMedication().getMedicationType();
     	// Business Logic
-        switch(prescription.getMedication().getMedicationType()) {        
-            // apply discounts for this patient based on the medication type of the size of the prescription
-            case Medication.ANTIHISTAMINE:
-                int s = prescription.getSize();
-                if (s > 100) {
-                    thisCost += s * 0.8;
-                } else if (s > 50) {
-                    thisCost += s * 0.9;
-                } else {
-                    thisCost += s;
-                }
-                break;
-            case Medication.DECONGESTANT:
-                thisCost += prescription.getSize() * 2;
-                break;
-            case Medication.PAINKILLER:
-                double z = prescription.getSize();
-                if (z > 200) {
-                    thisCost += z * 1.5;
-                } else if (z > 100) {
-                    thisCost += z * 2;
-                } else {
-                    thisCost += z * 3;
-                }
-                break;
-            default:
-            	break;
-        }
+    	if (Medication.GetTypeByIndex(type).equalsIgnoreCase("ANTIHISTAMINE")) {
+    		int s = prescription.getSize();
+            if (s > 100) {
+                thisCost += s * 0.8;
+            } else if (s > 50) {
+                thisCost += s * 0.9;
+            } else {
+                thisCost += s;
+            }
+    	}
+    	
+    	if (Medication.GetTypeByIndex(type).equalsIgnoreCase("DECONGESTANT")) {
+    		thisCost += prescription.getSize() * 2;
+    	}
+    	
+    	if (Medication.GetTypeByIndex(type).equalsIgnoreCase("PAINKILLER")) {
+    		double z = prescription.getSize();
+            if (z > 200) {
+                thisCost += z * 1.5;
+            } else if (z > 100) {
+                thisCost += z * 2;
+            } else {
+                thisCost += z * 3;
+            }
+    	}
         
         return thisCost;
     }
@@ -174,11 +164,12 @@ public class Receipt {
 	 */
 	public static int CalculateOptimalPoints(Prescription prescription) {
     	int thisOptimalPoints = 0;
+    	int type = prescription.getMedication().getMedicationType();
     	
     	// add optimal points for future in-store redemption
         thisOptimalPoints += 100;
         // we're running a promo to give bonus optimal points for decongestants!
-        if (prescription.getMedication().getMedicationType() == Medication.DECONGESTANT) {
+        if (Medication.GetTypeByIndex(type).equalsIgnoreCase("DECONGESTANT")) {
             thisOptimalPoints += 200;
         }
         
