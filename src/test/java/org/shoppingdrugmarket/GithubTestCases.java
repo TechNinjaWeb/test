@@ -54,7 +54,7 @@ public class GithubTestCases {
         Assert.assertEquals(medication.getMedicationType() >= 0, true);
     }
 
-    /**
+	/**
 	 * <p>
 	 * Test the Prescription for:
 	 * 	- a medication
@@ -125,7 +125,7 @@ public class GithubTestCases {
     
     
     
-    /**
+	/**
 	 * <p>
 	 * Test the Customer for:
 	 * 	- a medication

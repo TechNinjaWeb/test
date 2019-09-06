@@ -113,8 +113,8 @@ public class Receipt {
 	 * @throws InvalidReceiptException if the customer or prescriptions are invalid
 	 */
 	Receipt(Customer customer, List<Prescription> prescriptions) throws InvalidReceiptException {
-		this.customer = customer;
-	    this.prescriptions = prescriptions;
+		setCustomer(customer);
+		setPrescriptions(prescriptions);
 
 	    // Generate the required output for the receipt
 	    generateReceipt();
@@ -188,7 +188,7 @@ public class Receipt {
 	/*
 	 * INSTANCE METHODS
 	 */
-    
+	
     /**
      * Calculate the cost of any one prescription
      * by applying any custom business logic
