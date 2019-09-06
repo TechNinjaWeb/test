@@ -42,16 +42,16 @@ public class GithubTestCases {
     	Medication medication;
     	
 //    	Medication, which has a name and type of a stocked medication.
-    	medication = new Medication(name, Medication.GetTypeByName("PAINKILLER"));
+    	medication = new Medication(name, Medication.TYPES.PAINKILLER);
 
     	// Medication has a name
         Assert.assertThat(medication.getMedicationName(), equalToIgnoringCase(name)); 
 
-    	medication = new Medication("", Medication.GetTypeByName("PAINKILLER"));    	
+    	medication = new Medication("", Medication.TYPES.PAINKILLER);    	
         Assert.assertThat(medication.getMedicationName(), equalToIgnoringCase(""));
         
         // Medication has a type
-        Assert.assertEquals(medication.getMedicationType().isEmpty(), false);
+        Assert.assertEquals(medication.getMedicationType() instanceof Medication.TYPES, true);
     }
 
 	/**
@@ -65,9 +65,9 @@ public class GithubTestCases {
 	 * </p>
 	 */
     @Test
-    public void testPrescription() throws InvalidReceiptException {
+    public void testPrescription() {
     	String name = "Fake Drug Name";
-    	int type;
+    	Medication.TYPES type;
     	int qty;
     	boolean condition;
     	
@@ -76,7 +76,7 @@ public class GithubTestCases {
         ArrayList<Prescription> prescriptions;
         
 //    	Prescription, which has a medication and the number of units of medication that have been prescribed.
-        type = Medication.GetTypeByName("ANTIHISTAMINE");
+        type = Medication.TYPES.ANTIHISTAMINE;
         medication = new Medication(name, type);
         prescription = new Prescription(medication, 221);
         
@@ -87,7 +87,7 @@ public class GithubTestCases {
         
         
 //    	The standard price of antihistamines is 1 cents per unit
-        type = Medication.GetTypeByName("ANTIHISTAMINE");
+        type = Medication.TYPES.ANTIHISTAMINE;
         qty = 1;
 
     	medication = new Medication(name, type);
@@ -98,7 +98,7 @@ public class GithubTestCases {
         
         
 //    	The standard price of decongestants is 2 cents per unit
-        type = Medication.GetTypeByName("DECONGESTANT");
+        type = Medication.TYPES.DECONGESTANT;
         qty = 1;
         		
     	medication = new Medication(name, type);
@@ -113,7 +113,7 @@ public class GithubTestCases {
         
         
 //    	The standard price of pain killers is 3 cent per unit
-        type = Medication.GetTypeByName("PAINKILLER");
+        type = Medication.TYPES.PAINKILLER;
         qty = 1;
         		
     	medication = new Medication(name, type);
@@ -137,12 +137,12 @@ public class GithubTestCases {
 	 * </p>
 	 */
     @Test
-    public void testCustomer() throws InvalidReceiptException {
+    public void testCustomer() {
     	DecimalFormat decimalFormat = new DecimalFormat("#.00");
     	
     	String customerName = "John Smith";
     	String drugName = "Fake Drug";
-    	int type;
+    	Medication.TYPES type;
     	int qty;
     	boolean condition;
     	
@@ -153,9 +153,9 @@ public class GithubTestCases {
         
 //    	Customer, which has a name and a list of prescriptions        
         customer = new Customer(customerName);
-        customer.addNewPrescription(new Prescription(new Medication("Fake Meds 1", Medication.GetTypeByName("ANTIHISTAMINE")), 1));
-        customer.addNewPrescription(new Prescription(new Medication("Fake Meds 2", Medication.GetTypeByName("DECONGESTANT")), 1));
-        customer.addNewPrescription(new Prescription(new Medication("Fake Meds 3", Medication.GetTypeByName("PAINKILLER")), 1));
+        customer.addNewPrescription(new Prescription(new Medication("Fake Meds 1", Medication.TYPES.ANTIHISTAMINE), 1));
+        customer.addNewPrescription(new Prescription(new Medication("Fake Meds 2", Medication.TYPES.DECONGESTANT), 1));
+        customer.addNewPrescription(new Prescription(new Medication("Fake Meds 3", Medication.TYPES.PAINKILLER), 1));
 
         condition = customer.getName() != "";
         Assert.assertTrue(condition);
@@ -170,7 +170,7 @@ public class GithubTestCases {
         
 //    	When a customer buys more than 50 units of antihistamines, they get a 10% discount off the standard price
         customer = new Customer(customerName);
-        type = Medication.GetTypeByName("ANTIHISTAMINE");
+        type = Medication.TYPES.ANTIHISTAMINE;
         qty = 51;
         		
     	medication = new Medication(drugName, type);
@@ -187,7 +187,7 @@ public class GithubTestCases {
         
 //    	When a customer buys more than 100 units of antihistamines, they get a 20% discount off the standard price
         customer = new Customer(customerName);
-        type = Medication.GetTypeByName("ANTIHISTAMINE");
+        type = Medication.TYPES.ANTIHISTAMINE;
         qty = 101;
         		
     	medication = new Medication(drugName, type);
@@ -203,7 +203,7 @@ public class GithubTestCases {
         
 //    	When a customer buys more than 100 units of painkillers, they get a 33% discount off the standard price
         customer = new Customer(customerName);
-        type = Medication.GetTypeByName("PAINKILLER");
+        type = Medication.TYPES.PAINKILLER;
         qty = 101;
         		
     	medication = new Medication(drugName, type);
@@ -219,7 +219,7 @@ public class GithubTestCases {
         
 //    	When a customer buys more than 200 units of painkillers, they get a 50% discount off the standard price
         customer = new Customer(customerName);
-        type = Medication.GetTypeByName("PAINKILLER");
+        type = Medication.TYPES.PAINKILLER;
         qty = 201;
         		
     	medication = new Medication(drugName, type);
@@ -231,7 +231,7 @@ public class GithubTestCases {
         
 //    	Any purchase receives 100 Optimal points, but buying decongestants gets a bonus 200 Optimal points
         customer = new Customer(customerName);
-        type = Medication.GetTypeByName("ANTIHISTAMINE");
+        type = Medication.TYPES.ANTIHISTAMINE;
         qty = 15;
         		
     	medication = new Medication(drugName, type);
@@ -242,7 +242,7 @@ public class GithubTestCases {
 
 
         customer = new Customer(customerName);
-        type = Medication.GetTypeByName("PAINKILLER");
+        type = Medication.TYPES.PAINKILLER;
         qty = 21;
         		
     	medication = new Medication(drugName, type);
@@ -252,7 +252,7 @@ public class GithubTestCases {
         Assert.assertTrue(condition);
         
         customer = new Customer(customerName);
-        type = Medication.GetTypeByName("DECONGESTANT");
+        type = Medication.TYPES.DECONGESTANT;
         qty = 1;
         		
     	medication = new Medication(drugName, type);

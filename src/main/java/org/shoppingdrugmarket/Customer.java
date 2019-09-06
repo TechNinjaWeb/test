@@ -27,14 +27,6 @@ public class Customer {
     public void addNewPrescription(Prescription newPrescription) {
         prescriptions.add(newPrescription);
     }
-    
-    /**
-     * Get a list of prescriptions
-     * @return
-     */
-    public List<Prescription> getPrescriptions() {
-    	return prescriptions;
-    }
 
     
     /**
@@ -57,9 +49,8 @@ public class Customer {
      * Generate a plain text receipt for the customer's purchases
      *
      * @return a string containing the items purchased, their cost and the number of points the customer received
-     * @throws InvalidReceiptException 
      */
-    public String generatePrescriptionReceiptText() throws InvalidReceiptException {    	
+    public String generatePrescriptionReceiptText() {    	
     	Receipt receipt = new Receipt(this, prescriptions);
         return receipt.getTextResult();
     }
@@ -70,7 +61,7 @@ public class Customer {
      * @return an html string containing the items purchased, their cost and the number of points the customer received
      * @throws InvalidReceiptException 
      */
-    public String generatePrescriptionReceiptHtml() throws InvalidReceiptException {
+    public String generatePrescriptionReceiptHtml() {
     	Receipt receipt = new Receipt(this, prescriptions);
         return receipt.getHtmlResult();
     }

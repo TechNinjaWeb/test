@@ -14,8 +14,8 @@ public class ReceiptTest {
 	DecimalFormat decimalFormat = new DecimalFormat("#.00");
 	
     @Test
-    public void testReceipt() throws InvalidReceiptException {
-        Medication medication = new Medication("Advil", Medication.GetTypeByName("PAINKILLER"));
+    public void testReceipt() {
+        Medication medication = new Medication("Advil", Medication.TYPES.PAINKILLER);
         Prescription prescription = new Prescription(medication, 150);
         Customer customer = new Customer("John Smith");
 
@@ -31,8 +31,8 @@ public class ReceiptTest {
     }
 
     @Test
-    public void testHtmlReceipt() throws InvalidReceiptException {
-        Medication medication = new Medication("Advil", Medication.GetTypeByName("PAINKILLER"));
+    public void testHtmlReceipt() {
+        Medication medication = new Medication("Advil", Medication.TYPES.PAINKILLER);
         Prescription prescription = new Prescription(medication, 150);
         Customer customer = new Customer("John Smith");
 

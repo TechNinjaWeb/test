@@ -45,35 +45,11 @@ public class Receipt {
 	}
 
 	/**
-	 * Get a list of the customer's prescriptions 
-	 * @return the prescriptions
-	 */
-	public List<Prescription> getPrescriptions() {
-		return prescriptions;
-	}
-
-	/**
 	 * Store the list of the customer's prescriptions
 	 * @param prescriptions the prescriptions to set
 	 */
 	public void setPrescriptions(List<Prescription> prescriptions) {
 		this.prescriptions = prescriptions;
-	}
-
-	/**
-	 * Get the receipt total
-	 * @return the totalCost
-	 */
-	public double getTotalCost() {
-		return totalCost;
-	}
-
-	/**
-	 * Get the receipts total optimal points
-	 * @return the totalOptimalPoints
-	 */
-	public int getTotalOptimalPoints() {
-		return totalOptimalPoints;
 	}
 
 	/**
@@ -103,9 +79,8 @@ public class Receipt {
 	 * 
 	 * @param customer an instance of the customer
 	 * @param prescriptions a list of the customer's prescriptions
-	 * @throws InvalidReceiptException if the customer or prescriptions are invalid
 	 */
-	Receipt(Customer customer, List<Prescription> prescriptions) throws InvalidReceiptException {
+	Receipt(Customer customer, List<Prescription> prescriptions) {
 		setCustomer(customer);
 		setPrescriptions(prescriptions);
 
@@ -125,10 +100,13 @@ public class Receipt {
      */
 	public static double CalculatePrescriptionCost(Prescription prescription) {
     	double thisCost = 0.0;
-    	String type = prescription.getMedication().getMedicationType();
+    	Medication.TYPES type = prescription.getMedication().getMedicationType();
+
     	// Business Logic
-    	if (type.equalsIgnoreCase("ANTIHISTAMINE")) {
-    		int s = prescription.getSize();
+    	switch(type) {        
+        // apply discounts for this patient based on the medication type of the size of the prescription
+        case ANTIHISTAMINE:
+            int s = prescription.getSize();
             if (s > 100) {
                 thisCost += s * 0.8;
             } else if (s > 50) {
@@ -136,14 +114,12 @@ public class Receipt {
             } else {
                 thisCost += s;
             }
-    	}
-    	
-    	if (type.equalsIgnoreCase("DECONGESTANT")) {
-    		thisCost += prescription.getSize() * 2;
-    	}
-    	
-    	if (type.equalsIgnoreCase("PAINKILLER")) {
-    		double z = prescription.getSize();
+            break;
+        case DECONGESTANT:
+            thisCost += prescription.getSize() * 2;
+            break;
+        case PAINKILLER:
+            double z = prescription.getSize();
             if (z > 200) {
                 thisCost += z * 1.5;
             } else if (z > 100) {
@@ -151,7 +127,10 @@ public class Receipt {
             } else {
                 thisCost += z * 3;
             }
-    	}
+            break;
+        default:
+        	break;
+    }
         
         return thisCost;
     }
@@ -164,12 +143,12 @@ public class Receipt {
 	 */
 	public static int CalculateOptimalPoints(Prescription prescription) {
     	int thisOptimalPoints = 0;
-    	String type = prescription.getMedication().getMedicationType();
+    	Medication.TYPES type = prescription.getMedication().getMedicationType();
     	
     	// add optimal points for future in-store redemption
         thisOptimalPoints += 100;
         // we're running a promo to give bonus optimal points for decongestants!
-        if (type.equalsIgnoreCase("DECONGESTANT")) {
+        if (type == Medication.TYPES.DECONGESTANT) {
             thisOptimalPoints += 200;
         }
         
@@ -201,28 +180,10 @@ public class Receipt {
     }
     
     /**
-     * Validate the class by checking that the required instance methods have been initialized
-     * @throws InvalidReceiptException
-     */
-    public void validate() throws InvalidReceiptException {
-	    // Basic error handling
-    	if (customer.getName() == "" && prescriptions.isEmpty())
-    		throw new InvalidReceiptException("Customer and Prescriptions are invalid. Please check that there is at least 1 active prescription associated with this customer and that the name and other required variables are available!");
-    	
-    	if (customer.getName() == "")
-    		throw new InvalidReceiptException("Customer is invalid. Please check that the customer name and other required variables are available!");
-    	
-    	if (prescriptions.isEmpty())
-    		throw new InvalidReceiptException("Prescriptions are invalid. Please check that there is at least 1 active prescription associated with this customer");
-    }
-    
-    /**
      * Generates both the text and html based outputs and stores them in
      * private member variables
-     * @throws InvalidReceiptException 
      */
-    public void generateReceipt() throws InvalidReceiptException {
-    	validate();
+    public void generateReceipt() {
     	// Initialize required variables
     	totalCost = 0.0;
         totalOptimalPoints = 0;
