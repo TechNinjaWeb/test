@@ -100,7 +100,7 @@ public class Receipt {
      */
 	public static double CalculatePrescriptionCost(Prescription prescription) {
     	double thisCost = 0.0;
-    	Medication.TYPES type = prescription.getMedication().getMedicationType();
+    	Medication.Types type = prescription.getMedication().getMedicationType();
 
     	// Business Logic
     	switch(type) {        
@@ -143,12 +143,12 @@ public class Receipt {
 	 */
 	public static int CalculateOptimalPoints(Prescription prescription) {
     	int thisOptimalPoints = 0;
-    	Medication.TYPES type = prescription.getMedication().getMedicationType();
+    	Medication.Types type = prescription.getMedication().getMedicationType();
     	
     	// add optimal points for future in-store redemption
         thisOptimalPoints += 100;
         // we're running a promo to give bonus optimal points for decongestants!
-        if (type == Medication.TYPES.DECONGESTANT) {
+        if (type == Medication.Types.DECONGESTANT) {
             thisOptimalPoints += 200;
         }
         

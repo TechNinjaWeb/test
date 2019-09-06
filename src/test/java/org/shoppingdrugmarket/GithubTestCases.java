@@ -25,9 +25,9 @@ public class GithubTestCases {
 	 */
 	
 	// Represents the cents due to rounding must be integer
-	final int ANTIHISTAMINE_COST = 1;
-	final int DECONGESTANT_COST = 2;
-	final int PAINKILLER_COST = 3;
+//	final int ANTIHISTAMINE_COST = 1;
+//	final int DECONGESTANT_COST = 2;
+//	final int PAINKILLER_COST = 3;
 
 	/**
 	 * <p>
@@ -42,16 +42,16 @@ public class GithubTestCases {
     	Medication medication;
     	
 //    	Medication, which has a name and type of a stocked medication.
-    	medication = new Medication(name, Medication.TYPES.PAINKILLER);
+    	medication = new Medication(name, Medication.Types.PAINKILLER);
 
     	// Medication has a name
         Assert.assertThat(medication.getMedicationName(), equalToIgnoringCase(name)); 
 
-    	medication = new Medication("", Medication.TYPES.PAINKILLER);    	
+    	medication = new Medication("", Medication.Types.PAINKILLER);    	
         Assert.assertThat(medication.getMedicationName(), equalToIgnoringCase(""));
         
         // Medication has a type
-        Assert.assertEquals(medication.getMedicationType() instanceof Medication.TYPES, true);
+        Assert.assertEquals(medication.getMedicationType() instanceof Medication.Types, true);
     }
 
 	/**
@@ -67,7 +67,7 @@ public class GithubTestCases {
     @Test
     public void testPrescription() {
     	String name = "Fake Drug Name";
-    	Medication.TYPES type;
+    	Medication.Types type;
     	int qty;
     	boolean condition;
     	
@@ -76,7 +76,7 @@ public class GithubTestCases {
         ArrayList<Prescription> prescriptions;
         
 //    	Prescription, which has a medication and the number of units of medication that have been prescribed.
-        type = Medication.TYPES.ANTIHISTAMINE;
+        type = Medication.Types.ANTIHISTAMINE;
         medication = new Medication(name, type);
         prescription = new Prescription(medication, 221);
         
@@ -87,18 +87,18 @@ public class GithubTestCases {
         
         
 //    	The standard price of antihistamines is 1 cents per unit
-        type = Medication.TYPES.ANTIHISTAMINE;
+        type = Medication.Types.ANTIHISTAMINE;
         qty = 1;
 
     	medication = new Medication(name, type);
         prescription = new Prescription(medication, qty);
         
-        condition = Receipt.CalculatePrescriptionCost(prescription) == ANTIHISTAMINE_COST;
+        condition = Receipt.CalculatePrescriptionCost(prescription) == Medication.Types.ANTIHISTAMINE.getValue();
         Assert.assertEquals(condition, true);
         
         
 //    	The standard price of decongestants is 2 cents per unit
-        type = Medication.TYPES.DECONGESTANT;
+        type = Medication.Types.DECONGESTANT;
         qty = 1;
         		
     	medication = new Medication(name, type);
@@ -107,19 +107,19 @@ public class GithubTestCases {
         
         prescriptions.add(prescription);
         
-        condition = Receipt.CalculatePrescriptionCost(prescription) == DECONGESTANT_COST;
+        condition = Receipt.CalculatePrescriptionCost(prescription) == Medication.Types.DECONGESTANT.getValue();
         Assert.assertEquals(condition, true);
         
         
         
 //    	The standard price of pain killers is 3 cent per unit
-        type = Medication.TYPES.PAINKILLER;
+        type = Medication.Types.PAINKILLER;
         qty = 1;
         		
     	medication = new Medication(name, type);
         prescription = new Prescription(medication, qty);
         
-        condition = Receipt.CalculatePrescriptionCost(prescription) == PAINKILLER_COST;
+        condition = Receipt.CalculatePrescriptionCost(prescription) == Medication.Types.PAINKILLER.getValue();
         Assert.assertEquals(condition, true);
     }
     
@@ -142,7 +142,7 @@ public class GithubTestCases {
     	
     	String customerName = "John Smith";
     	String drugName = "Fake Drug";
-    	Medication.TYPES type;
+    	Medication.Types type;
     	int qty;
     	boolean condition;
     	
@@ -153,9 +153,9 @@ public class GithubTestCases {
         
 //    	Customer, which has a name and a list of prescriptions        
         customer = new Customer(customerName);
-        customer.addNewPrescription(new Prescription(new Medication("Fake Meds 1", Medication.TYPES.ANTIHISTAMINE), 1));
-        customer.addNewPrescription(new Prescription(new Medication("Fake Meds 2", Medication.TYPES.DECONGESTANT), 1));
-        customer.addNewPrescription(new Prescription(new Medication("Fake Meds 3", Medication.TYPES.PAINKILLER), 1));
+        customer.addNewPrescription(new Prescription(new Medication("Fake Meds 1", Medication.Types.ANTIHISTAMINE), 1));
+        customer.addNewPrescription(new Prescription(new Medication("Fake Meds 2", Medication.Types.DECONGESTANT), 1));
+        customer.addNewPrescription(new Prescription(new Medication("Fake Meds 3", Medication.Types.PAINKILLER), 1));
 
         condition = customer.getName() != "";
         Assert.assertTrue(condition);
@@ -170,68 +170,68 @@ public class GithubTestCases {
         
 //    	When a customer buys more than 50 units of antihistamines, they get a 10% discount off the standard price
         customer = new Customer(customerName);
-        type = Medication.TYPES.ANTIHISTAMINE;
+        type = Medication.Types.ANTIHISTAMINE;
         qty = 51;
         		
     	medication = new Medication(drugName, type);
         prescription = new Prescription(medication, qty);
         
-        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((ANTIHISTAMINE_COST * qty) * 0.9) / 100.0));
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((Medication.Types.ANTIHISTAMINE.getValue() * qty) * 0.9) / 100.0));
         Assert.assertTrue(condition);
         
         qty = 50;
-        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((ANTIHISTAMINE_COST * qty) * 0.9) / 100.0));
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((Medication.Types.ANTIHISTAMINE.getValue() * qty) * 0.9) / 100.0));
         Assert.assertFalse(condition);
         
         
         
 //    	When a customer buys more than 100 units of antihistamines, they get a 20% discount off the standard price
         customer = new Customer(customerName);
-        type = Medication.TYPES.ANTIHISTAMINE;
+        type = Medication.Types.ANTIHISTAMINE;
         qty = 101;
         		
     	medication = new Medication(drugName, type);
         prescription = new Prescription(medication, qty);
         
-        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((ANTIHISTAMINE_COST * qty) * 0.8) / 100.0));
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((Medication.Types.ANTIHISTAMINE.getValue() * qty) * 0.8) / 100.0));
         Assert.assertTrue(condition);
         
         qty = 100;
-        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((ANTIHISTAMINE_COST * qty) * 0.8) / 100.0));
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((Medication.Types.ANTIHISTAMINE.getValue() * qty) * 0.8) / 100.0));
         Assert.assertFalse(condition);
         
         
 //    	When a customer buys more than 100 units of painkillers, they get a 33% discount off the standard price
         customer = new Customer(customerName);
-        type = Medication.TYPES.PAINKILLER;
+        type = Medication.Types.PAINKILLER;
         qty = 101;
         		
     	medication = new Medication(drugName, type);
         prescription = new Prescription(medication, qty);
         
-        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( (qty * (int)(PAINKILLER_COST * 0.67)) / 100.0) );
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( (qty * (int)(Medication.Types.PAINKILLER.getValue() * 0.67)) / 100.0) );
         Assert.assertTrue(condition);
         
         qty = 100;
-        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( (qty * (int)(PAINKILLER_COST * 0.67)) / 100.0) );
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( (qty * (int)(Medication.Types.PAINKILLER.getValue() * 0.67)) / 100.0) );
         Assert.assertFalse(condition);
         
         
 //    	When a customer buys more than 200 units of painkillers, they get a 50% discount off the standard price
         customer = new Customer(customerName);
-        type = Medication.TYPES.PAINKILLER;
+        type = Medication.Types.PAINKILLER;
         qty = 201;
         		
     	medication = new Medication(drugName, type);
         prescription = new Prescription(medication, qty);
         
-        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( (qty * (PAINKILLER_COST * 0.5)) / 100.0) );
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( (qty * (Medication.Types.PAINKILLER.getValue() * 0.5)) / 100.0) );
         Assert.assertTrue(condition);
         
         
 //    	Any purchase receives 100 Optimal points, but buying decongestants gets a bonus 200 Optimal points
         customer = new Customer(customerName);
-        type = Medication.TYPES.ANTIHISTAMINE;
+        type = Medication.Types.ANTIHISTAMINE;
         qty = 15;
         		
     	medication = new Medication(drugName, type);
@@ -242,7 +242,7 @@ public class GithubTestCases {
 
 
         customer = new Customer(customerName);
-        type = Medication.TYPES.PAINKILLER;
+        type = Medication.Types.PAINKILLER;
         qty = 21;
         		
     	medication = new Medication(drugName, type);
@@ -252,7 +252,7 @@ public class GithubTestCases {
         Assert.assertTrue(condition);
         
         customer = new Customer(customerName);
-        type = Medication.TYPES.DECONGESTANT;
+        type = Medication.Types.DECONGESTANT;
         qty = 1;
         		
     	medication = new Medication(drugName, type);

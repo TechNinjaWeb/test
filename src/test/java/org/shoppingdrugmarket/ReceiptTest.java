@@ -15,7 +15,7 @@ public class ReceiptTest {
 	
     @Test
     public void testReceipt() {
-        Medication medication = new Medication("Advil", Medication.TYPES.PAINKILLER);
+        Medication medication = new Medication("Advil", Medication.Types.PAINKILLER);
         Prescription prescription = new Prescription(medication, 150);
         Customer customer = new Customer("John Smith");
 
@@ -32,7 +32,7 @@ public class ReceiptTest {
 
     @Test
     public void testHtmlReceipt() {
-        Medication medication = new Medication("Advil", Medication.TYPES.PAINKILLER);
+        Medication medication = new Medication("Advil", Medication.Types.PAINKILLER);
         Prescription prescription = new Prescription(medication, 150);
         Customer customer = new Customer("John Smith");
 

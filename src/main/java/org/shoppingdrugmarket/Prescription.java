@@ -18,10 +18,18 @@ public class Prescription {
         this.size = unitCount;
     }
 
+    /**
+     * Get the prescription's unit size
+     * @return
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     * Get this prescription's medication
+     * @return
+     */
     public Medication getMedication() {
         return medication;
     }
