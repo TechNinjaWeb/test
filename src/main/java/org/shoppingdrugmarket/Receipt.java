@@ -125,9 +125,9 @@ public class Receipt {
      */
 	public static double CalculatePrescriptionCost(Prescription prescription) {
     	double thisCost = 0.0;
-    	int type = prescription.getMedication().getMedicationType();
+    	String type = prescription.getMedication().getMedicationType();
     	// Business Logic
-    	if (Medication.GetTypeByIndex(type).equalsIgnoreCase("ANTIHISTAMINE")) {
+    	if (type.equalsIgnoreCase("ANTIHISTAMINE")) {
     		int s = prescription.getSize();
             if (s > 100) {
                 thisCost += s * 0.8;
@@ -138,11 +138,11 @@ public class Receipt {
             }
     	}
     	
-    	if (Medication.GetTypeByIndex(type).equalsIgnoreCase("DECONGESTANT")) {
+    	if (type.equalsIgnoreCase("DECONGESTANT")) {
     		thisCost += prescription.getSize() * 2;
     	}
     	
-    	if (Medication.GetTypeByIndex(type).equalsIgnoreCase("PAINKILLER")) {
+    	if (type.equalsIgnoreCase("PAINKILLER")) {
     		double z = prescription.getSize();
             if (z > 200) {
                 thisCost += z * 1.5;
@@ -164,12 +164,12 @@ public class Receipt {
 	 */
 	public static int CalculateOptimalPoints(Prescription prescription) {
     	int thisOptimalPoints = 0;
-    	int type = prescription.getMedication().getMedicationType();
+    	String type = prescription.getMedication().getMedicationType();
     	
     	// add optimal points for future in-store redemption
         thisOptimalPoints += 100;
         // we're running a promo to give bonus optimal points for decongestants!
-        if (Medication.GetTypeByIndex(type).equalsIgnoreCase("DECONGESTANT")) {
+        if (type.equalsIgnoreCase("DECONGESTANT")) {
             thisOptimalPoints += 200;
         }
         

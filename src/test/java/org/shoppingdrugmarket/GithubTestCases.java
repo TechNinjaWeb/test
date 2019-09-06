@@ -51,7 +51,7 @@ public class GithubTestCases {
         Assert.assertThat(medication.getMedicationName(), equalToIgnoringCase(""));
         
         // Medication has a type
-        Assert.assertEquals(medication.getMedicationType() >= 0, true);
+        Assert.assertEquals(medication.getMedicationType().isEmpty(), false);
     }
 
 	/**
