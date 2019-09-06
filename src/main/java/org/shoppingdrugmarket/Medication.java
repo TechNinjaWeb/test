@@ -27,7 +27,7 @@ public class Medication {
     	 * Get the value stored in the enum
     	 * @return
     	 */
-    	public int getValue()
+    	public int unitCost()
         {
             return value;
         }

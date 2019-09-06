@@ -20,15 +20,6 @@ import java.util.ArrayList;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
 public class GithubTestCases {
-	/*
-	 * CONSTANTS DECLARATIONS
-	 */
-	
-	// Represents the cents due to rounding must be integer
-//	final int ANTIHISTAMINE_COST = 1;
-//	final int DECONGESTANT_COST = 2;
-//	final int PAINKILLER_COST = 3;
-
 	/**
 	 * <p>
 	 * Test the Medication for:
@@ -93,8 +84,8 @@ public class GithubTestCases {
     	medication = new Medication(name, type);
         prescription = new Prescription(medication, qty);
         
-        condition = Receipt.CalculatePrescriptionCost(prescription) == Medication.Types.ANTIHISTAMINE.getValue();
-        Assert.assertEquals(condition, true);
+        condition = Receipt.CalculatePrescriptionCost(prescription) == Medication.Types.ANTIHISTAMINE.unitCost();
+        Assert.assertTrue(condition);
         
         
 //    	The standard price of decongestants is 2 cents per unit
@@ -107,8 +98,8 @@ public class GithubTestCases {
         
         prescriptions.add(prescription);
         
-        condition = Receipt.CalculatePrescriptionCost(prescription) == Medication.Types.DECONGESTANT.getValue();
-        Assert.assertEquals(condition, true);
+        condition = Receipt.CalculatePrescriptionCost(prescription) == Medication.Types.DECONGESTANT.unitCost();
+        Assert.assertTrue(condition);
         
         
         
@@ -119,8 +110,8 @@ public class GithubTestCases {
     	medication = new Medication(name, type);
         prescription = new Prescription(medication, qty);
         
-        condition = Receipt.CalculatePrescriptionCost(prescription) == Medication.Types.PAINKILLER.getValue();
-        Assert.assertEquals(condition, true);
+        condition = Receipt.CalculatePrescriptionCost(prescription) == Medication.Types.PAINKILLER.unitCost();
+        Assert.assertTrue(condition);
     }
     
     
@@ -176,11 +167,11 @@ public class GithubTestCases {
     	medication = new Medication(drugName, type);
         prescription = new Prescription(medication, qty);
         
-        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((Medication.Types.ANTIHISTAMINE.getValue() * qty) * 0.9) / 100.0));
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((Medication.Types.ANTIHISTAMINE.unitCost() * qty) * 0.9) / 100.0));
         Assert.assertTrue(condition);
         
         qty = 50;
-        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((Medication.Types.ANTIHISTAMINE.getValue() * qty) * 0.9) / 100.0));
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((Medication.Types.ANTIHISTAMINE.unitCost() * qty) * 0.9) / 100.0));
         Assert.assertFalse(condition);
         
         
@@ -193,11 +184,11 @@ public class GithubTestCases {
     	medication = new Medication(drugName, type);
         prescription = new Prescription(medication, qty);
         
-        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((Medication.Types.ANTIHISTAMINE.getValue() * qty) * 0.8) / 100.0));
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((Medication.Types.ANTIHISTAMINE.unitCost() * qty) * 0.8) / 100.0));
         Assert.assertTrue(condition);
         
         qty = 100;
-        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((Medication.Types.ANTIHISTAMINE.getValue() * qty) * 0.8) / 100.0));
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( ((Medication.Types.ANTIHISTAMINE.unitCost() * qty) * 0.8) / 100.0));
         Assert.assertFalse(condition);
         
         
@@ -209,11 +200,11 @@ public class GithubTestCases {
     	medication = new Medication(drugName, type);
         prescription = new Prescription(medication, qty);
         
-        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( (qty * (int)(Medication.Types.PAINKILLER.getValue() * 0.67)) / 100.0) );
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( (qty * (int)(Medication.Types.PAINKILLER.unitCost() * 0.67)) / 100.0) );
         Assert.assertTrue(condition);
         
         qty = 100;
-        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( (qty * (int)(Medication.Types.PAINKILLER.getValue() * 0.67)) / 100.0) );
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( (qty * (int)(Medication.Types.PAINKILLER.unitCost() * 0.67)) / 100.0) );
         Assert.assertFalse(condition);
         
         
@@ -225,11 +216,16 @@ public class GithubTestCases {
     	medication = new Medication(drugName, type);
         prescription = new Prescription(medication, qty);
         
-        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( (qty * (Medication.Types.PAINKILLER.getValue() * 0.5)) / 100.0) );
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( (qty * (Medication.Types.PAINKILLER.unitCost() * 0.5)) / 100.0) );
         Assert.assertTrue(condition);
+        
+        qty = 200;
+        condition = decimalFormat.format(Receipt.CalculatePrescriptionCost(prescription) / 100.0).equalsIgnoreCase(decimalFormat.format( (qty * (int)(Medication.Types.PAINKILLER.unitCost() * 0.5)) / 100.0) );
+        Assert.assertFalse(condition);
         
         
 //    	Any purchase receives 100 Optimal points, but buying decongestants gets a bonus 200 Optimal points
+        Customer testCustomer = new Customer("Testy Customer");
         customer = new Customer(customerName);
         type = Medication.Types.ANTIHISTAMINE;
         qty = 15;
@@ -239,6 +235,7 @@ public class GithubTestCases {
         
         condition = Receipt.CalculateOptimalPoints(prescription) == 100;
         Assert.assertTrue(condition);
+        testCustomer.addNewPrescription(prescription);
 
 
         customer = new Customer(customerName);
@@ -250,6 +247,7 @@ public class GithubTestCases {
         
         condition = Receipt.CalculateOptimalPoints(prescription) == 100;
         Assert.assertTrue(condition);
+        testCustomer.addNewPrescription(prescription);
         
         customer = new Customer(customerName);
         type = Medication.Types.DECONGESTANT;
@@ -259,6 +257,12 @@ public class GithubTestCases {
         prescription = new Prescription(medication, qty);
         
         condition = Receipt.CalculateOptimalPoints(prescription) == 300;
+        Assert.assertTrue(condition);
+        testCustomer.addNewPrescription(prescription);
+        
+        // Create a temporary receipt to process the optimal point total
+        Receipt receipt = new Receipt(testCustomer, testCustomer.getPrescriptions());
+        condition = receipt.getTotalOptimalPoints() == 500;
         Assert.assertTrue(condition);
     }
 

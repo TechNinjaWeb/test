@@ -1,14 +1,13 @@
 package org.shoppingdrugmarket;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A customer of Shopping Drug Market
  */
 public class Customer {
     private String name;
-    private List<Prescription> prescriptions = new ArrayList<Prescription>();
+    private ArrayList<Prescription> prescriptions = new ArrayList<Prescription>();
 
     /**
      * A customer must have a name
@@ -43,6 +42,14 @@ public class Customer {
      */
     public String getName() {
         return name;
+    }
+    
+    /**
+     * Get a list of prescriptions
+     * @return
+     */
+    public ArrayList<Prescription> getPrescriptions() {
+    	return prescriptions;
     }
 
     /**

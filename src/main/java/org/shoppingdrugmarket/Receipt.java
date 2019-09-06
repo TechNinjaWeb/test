@@ -10,7 +10,7 @@
 package org.shoppingdrugmarket;
 
 import java.text.DecimalFormat;
-import java.util.List;
+import java.util.ArrayList;
 
 
 /**
@@ -23,7 +23,7 @@ public class Receipt {
 	
 	// Dependent variables
 	private Customer customer;
-	private List<Prescription> prescriptions;
+	private ArrayList<Prescription> prescriptions;
 	// Accumulators
 	private double totalCost = 0.0;
 	private int totalOptimalPoints = 0;
@@ -48,8 +48,16 @@ public class Receipt {
 	 * Store the list of the customer's prescriptions
 	 * @param prescriptions the prescriptions to set
 	 */
-	public void setPrescriptions(List<Prescription> prescriptions) {
+	public void setPrescriptions(ArrayList<Prescription> prescriptions) {
 		this.prescriptions = prescriptions;
+	}
+	
+	/**
+	 * Get the value of total optimal points
+	 * @return the total points for all listed prescriptions
+	 */
+	public int getTotalOptimalPoints() {
+		return totalOptimalPoints;
 	}
 
 	/**
@@ -80,7 +88,7 @@ public class Receipt {
 	 * @param customer an instance of the customer
 	 * @param prescriptions a list of the customer's prescriptions
 	 */
-	Receipt(Customer customer, List<Prescription> prescriptions) {
+	Receipt(Customer customer, ArrayList<Prescription> prescriptions) {
 		setCustomer(customer);
 		setPrescriptions(prescriptions);
 
@@ -99,38 +107,38 @@ public class Receipt {
      * @return the cost associated with the prescription
      */
 	public static double CalculatePrescriptionCost(Prescription prescription) {
-    	double thisCost = 0.0;
-    	Medication.Types type = prescription.getMedication().getMedicationType();
-
-    	// Business Logic
-    	switch(type) {        
-        // apply discounts for this patient based on the medication type of the size of the prescription
-        case ANTIHISTAMINE:
-            int s = prescription.getSize();
-            if (s > 100) {
-                thisCost += s * 0.8;
-            } else if (s > 50) {
-                thisCost += s * 0.9;
-            } else {
-                thisCost += s;
-            }
-            break;
-        case DECONGESTANT:
-            thisCost += prescription.getSize() * 2;
-            break;
-        case PAINKILLER:
-            double z = prescription.getSize();
-            if (z > 200) {
-                thisCost += z * 1.5;
-            } else if (z > 100) {
-                thisCost += z * 2;
-            } else {
-                thisCost += z * 3;
-            }
-            break;
-        default:
-        	break;
-    }
+		double thisCost = 0.0;
+		Medication.Types type = prescription.getMedication().getMedicationType();
+		
+		// Business Logic
+		switch(type) {        
+			// apply discounts for this patient based on the medication type of the size of the prescription
+			case ANTIHISTAMINE:
+			    int s = prescription.getSize();
+			    if (s > 100) {
+			        thisCost += s * 0.8;
+			    } else if (s > 50) {
+			        thisCost += s * 0.9;
+			    } else {
+			        thisCost += s;
+			    }
+			    break;
+			case DECONGESTANT:
+			    thisCost += prescription.getSize() * 2;
+			    break;
+			case PAINKILLER:
+			    double z = prescription.getSize();
+			    if (z > 200) {
+			        thisCost += z * 1.5;
+			    } else if (z > 100) {
+			        thisCost += z * 2;
+			    } else {
+			        thisCost += z * 3;
+			    }
+			    break;
+			default:
+				break;
+		}
         
         return thisCost;
     }
@@ -142,18 +150,18 @@ public class Receipt {
 	 * @return the optimal points associated with the prescription
 	 */
 	public static int CalculateOptimalPoints(Prescription prescription) {
-    	int thisOptimalPoints = 0;
-    	Medication.Types type = prescription.getMedication().getMedicationType();
-    	
-    	// add optimal points for future in-store redemption
-        thisOptimalPoints += 100;
-        // we're running a promo to give bonus optimal points for decongestants!
-        if (type == Medication.Types.DECONGESTANT) {
-            thisOptimalPoints += 200;
-        }
-        
-        return thisOptimalPoints;
-    }
+		int thisOptimalPoints = 0;
+		Medication.Types type = prescription.getMedication().getMedicationType();
+		
+		// add optimal points for future in-store redemption
+		thisOptimalPoints += 100;
+		// we're running a promo to give bonus optimal points for decongestants!
+		if (type == Medication.Types.DECONGESTANT) {
+		    thisOptimalPoints += 200;
+		}
+		
+		return thisOptimalPoints;
+	}
 	
 	/*
 	 * INSTANCE METHODS
