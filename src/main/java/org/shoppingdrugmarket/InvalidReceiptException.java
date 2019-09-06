@@ -15,14 +15,14 @@ package org.shoppingdrugmarket;
  * Invalidates the receipt if errors are found
  */
 @SuppressWarnings("serial")
-public class InvalidReceipt extends Exception {
+public class InvalidReceiptException extends Exception {
 	/**
 	 * Default constructor: just calls parent constructor
 	 */
-	InvalidReceipt() { super(); }
+	InvalidReceiptException() { super(); }
 	/**
 	 * Parameterized Constructor: Takes a message and passes it to super
 	 * @param message
 	 */
-	InvalidReceipt(String message)  { super(message); }
+	InvalidReceiptException(String message)  { super(message); }
 }

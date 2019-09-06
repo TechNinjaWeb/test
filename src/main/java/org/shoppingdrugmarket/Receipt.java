@@ -26,13 +26,13 @@ public class Receipt {
 	private List<Prescription> prescriptions;
 	// Accumulators
 	private double totalCost = 0.0;
-    private int totalOptimalPoints = 0;
-    // Output
-    private String textResult = "";
-    private String htmlResult = "";
-    private DecimalFormat decimalFormat = new DecimalFormat("#.00");
+	private int totalOptimalPoints = 0;
+	// Output
+	private String textResult = "";
+	private String htmlResult = "";
+	private DecimalFormat decimalFormat = new DecimalFormat("#.00");
 	
-    /*
+	/*
 	 * GETTERS AND SETTERS
 	 */
 
@@ -110,9 +110,9 @@ public class Receipt {
 	 * 
 	 * @param customer an instance of the customer
 	 * @param prescriptions a list of the customer's prescriptions
-	 * @throws InvalidReceipt if the customer or prescriptions are invalid
+	 * @throws InvalidReceiptException if the customer or prescriptions are invalid
 	 */
-	Receipt(Customer customer, List<Prescription> prescriptions) throws InvalidReceipt {
+	Receipt(Customer customer, List<Prescription> prescriptions) throws InvalidReceiptException {
 		this.customer = customer;
 	    this.prescriptions = prescriptions;
 
@@ -121,34 +121,16 @@ public class Receipt {
 	}
 	
 	/*
-	 * INSTANCE METHODS
+	 * CLASS METHODS
 	 */
 	
-	/**
-     * Generate a plain text receipt for the customer's purchases
-     *
-     * @return a string containing the items purchased, their cost and the number of points the customer received
-     */
-	public String getPrescriptionReceiptText() {
-		return textResult;
-    }
-
-    /**
-     * Generate an HTML receipt for e-mailing to the customer
-     *
-     * @return an html string containing the items purchased, their cost and the number of points the customer received
-     */
-    public String getPrescriptionReceiptHtml() {                
-        return htmlResult;
-    }
-    
     /**
      * Calculate the cost of any one prescription
      * by applying any custom business logic
      * @param prescription
      * @return the cost associated with the prescription
      */
-    public double calculatePrescriptionCost(Prescription prescription) {
+	public static double CalculatePrescriptionCost(Prescription prescription) {
     	double thisCost = 0.0;
     	
     	// Business Logic
@@ -183,14 +165,14 @@ public class Receipt {
         
         return thisCost;
     }
-    
-    /**
-     * Calculate the optimal points associated with any one prescription
-     * by applying any custom business logic
-     * @param prescription
-     * @return the optimal points associated with the prescription
-     */
-    public int calculateOptimalPoints(Prescription prescription) {
+	
+	/**
+	 * Calculate the optimal points associated with any one prescription
+	 * by applying any custom business logic
+	 * @param prescription
+	 * @return the optimal points associated with the prescription
+	 */
+	public static int CalculateOptimalPoints(Prescription prescription) {
     	int thisOptimalPoints = 0;
     	
     	// add optimal points for future in-store redemption
@@ -202,29 +184,53 @@ public class Receipt {
         
         return thisOptimalPoints;
     }
+	
+	/*
+	 * INSTANCE METHODS
+	 */
+    
+    /**
+     * Calculate the cost of any one prescription
+     * by applying any custom business logic
+     * @param prescription
+     * @return the cost associated with the prescription
+     */
+    public double calculatePrescriptionCost(Prescription prescription) {
+    	return Receipt.CalculatePrescriptionCost(prescription);
+    }
+    
+    /**
+     * Calculate the optimal points associated with any one prescription
+     * by applying any custom business logic
+     * @param prescription
+     * @return the optimal points associated with the prescription
+     */
+    public int calculateOptimalPoints(Prescription prescription) {
+    	return Receipt.CalculateOptimalPoints(prescription);
+    }
     
     /**
      * Validate the class by checking that the required instance methods have been initialized
-     * @throws InvalidReceipt
+     * @throws InvalidReceiptException
      */
-    public void validate() throws InvalidReceipt {
+    public void validate() throws InvalidReceiptException {
 	    // Basic error handling
     	if (customer.getName() == "" && prescriptions.isEmpty())
-    		throw new InvalidReceipt("Customer and Prescriptions are invalid. Please check that there is at least 1 active prescription associated with this customer and that the name and other required variables are available!");
+    		throw new InvalidReceiptException("Customer and Prescriptions are invalid. Please check that there is at least 1 active prescription associated with this customer and that the name and other required variables are available!");
     	
     	if (customer.getName() == "")
-    		throw new InvalidReceipt("Customer is invalid. Please check that the customer name and other required variables are available!");
+    		throw new InvalidReceiptException("Customer is invalid. Please check that the customer name and other required variables are available!");
     	
     	if (prescriptions.isEmpty())
-    		throw new InvalidReceipt("Prescriptions are invalid. Please check that there is at least 1 active prescription associated with this customer");
+    		throw new InvalidReceiptException("Prescriptions are invalid. Please check that there is at least 1 active prescription associated with this customer");
     }
     
     /**
      * Generates both the text and html based outputs and stores them in
      * private member variables
-     * @throws InvalidReceipt 
+     * @throws InvalidReceiptException 
      */
-    public void generateReceipt() throws InvalidReceipt {
+    public void generateReceipt() throws InvalidReceiptException {
     	validate();
     	// Initialize required variables
     	totalCost = 0.0;
